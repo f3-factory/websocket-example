@@ -6,7 +6,7 @@ This repository contains a simple WebSocket-based chat example built with the [F
 
 * [Features](#features)
 * [Implementation](#implementation)
-* [Run & Chat](#run---chat)
+* [Run & Chat](#run--chat)
 * [Example Output](#example-output)
 
 ## Features
