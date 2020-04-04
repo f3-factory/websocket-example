@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>WebSocket Example</title>
+</head>
+<body>
+
+<h1>HTML5 WebSocket Example</h1>
+
+<p>
+    This HTML5 WebSocket client completes the WebSocket example implementation based upon the <a href="https://fatfreeframework.com/3.7/home">Fat-Free Framework</a>.
+    Visit <a href="https://github.com/F3Community/websocket-example">github.com/F3Community/websocket-example</a> for more information.
+</p>
+
+<hr>
+
+<div>
+    <input type="text" id="chat-input" autofocus>
+    <button id="chat-submit">Send</button>
+</div>
+<ul id="chat-messages"></ul>
+
+<script>
+    let server = 'ws://' + window.location.hostname + ':9001';
+
+    let input = document.getElementById('chat-input');
+    let submit = document.getElementById('chat-submit');
+    let messages = document.getElementById('chat-messages');
+    let ws = null;
+
+    let add_message = (message) => {
+        console.log(message);
+
+        let li = document.createElement('li');
+        li.innerText = message;
+
+        messages.append(li);
+    };
+
+    let send_message = () => {
+        ws.send(input.value);
+        input.value = '';
+    };
+
+    add_message('Connect to ' + server)
+    ws = new window.WebSocket(server);
+
+    submit.onclick = send_message;
+
+    input.onkeydown = (e) => {
+        if (e.key === 'Enter' || e.code === 'NumpadEnter') {
+            send_message();
+        }
+    };
+
+    if (ws) {
+        ws.onopen = () => add_message('WebSocket.onopen() called');
+        ws.onmessage = (e) => add_message(e.data);
+        ws.onclose = () => add_message('WebSocket.onclose() called');
+
+        ws.onerror = (e) => {
+            add_message('WebSocket.onerror() called. The console log contains more information.');
+            console.log(e);
+        };
+    }
+
+    else {
+        add_message('Failed to connect to WS');
+    }
+</script>
+
+</body>
+</html>
